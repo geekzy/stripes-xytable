@@ -1,0 +1,121 @@
+<project name="stripes-xytable" default="dist" basedir=".">
+    <description>stripes-xytable</description>
+
+    <property file="build.properties"/>
+
+    <property name="version" value="1.0"/>
+    <property name="warfile" value="${ant.project.name}.war"/>
+
+    <property name="web.dir" value="web"/>
+    <property name="dist.dir" location="dist"/>
+    <property name="src.dir" value="src"/>
+    <property name="test.dir" value="${basedir}/test"/>
+    <property name="test.output.dir" value="${dist.dir}/test"/>
+
+    <property name="build.dir" location="${web.dir}/WEB-INF"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="test.classes.dir" value="${classes.dir}/com/xybase/test"/>
+    <property name="project.libs.dir" location="${build.dir}/lib"/>
+    <property name="server.libs.dir" value="${server.dir}/lib"/>
+    <property name="ibator.libs.dir" value="${basedir}/db"/>
+
+    <path id="base.path">
+        <fileset dir="${project.libs.dir}" includes="**/*.jar"/>
+        <fileset dir="${server.libs.dir}" includes="**/*.jar"/>
+        <fileset dir="${ibator.libs.dir}" includes="**/*.jar"/>
+    </path>
+    <path id="testng.cp">
+        <path refid="base.path"/>
+        <pathelement location="${classes.dir}"/>
+    </path>
+
+    <!-- Init -->
+    <target name="init">
+        <echo>Using JAVA_HOME = ${java.home}</echo>
+        <tstamp>
+            <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+
+        <mkdir dir="${classes.dir}"/>
+    </target>
+
+    <!-- Clean -->
+    <target name="clean" description="clean-up">
+        <delete dir="${dist.dir}"/>
+        <delete dir="${classes.dir}"/>
+    </target>
+
+    <!-- Compile -->
+    <target name="compile" depends="init" description="Compiles the source code">
+        <copy todir="${classes.dir}">
+            <fileset dir="${src.dir}" includes="**/*.properties **/*.xml **/*.txt"/>
+        </copy>
+        <javac fork="true"
+               debug="true"
+               optimize="false"
+               deprecation="false"
+               source="1.6"
+               target="1.6"
+               srcdir="${src.dir}"
+               destdir="${classes.dir}"
+               includeantruntime="false">
+            <classpath refid="base.path"/>
+            <exclude name="**/*.properties"/>
+            <exclude name="**/*.xml"/>
+        </javac>
+    </target>
+
+    <!-- Dist -->
+    <target name="dist" depends="compile" description="Generates the distribution file">
+        <mkdir dir="${dist.dir}"/>
+        <delete file="${dist.dir}/${warfile}"/>
+
+        <!-- war -->
+        <war destfile="${dist.dir}/${warfile}" webxml="${web.dir}/WEB-INF/web.xml">
+            <fileset dir="${web.dir}">
+                <include name="css/**/*"/>
+                <include name="img/**/*"/>
+                <include name="js/**/*"/>
+                <include name="index.html"/>
+            </fileset>
+            <webinf dir="${web.dir}/WEB-INF">
+                <include name="*.xml"/>
+                <include name="*.properties"/>
+                <include name="taglib/**/*"/>
+                <include name="ftl/**/*"/>
+                <exclude name="web.xml"/>
+            </webinf>
+            <lib dir="${project.libs.dir}"/>
+            <classes dir="${classes.dir}"/>
+            <manifest>
+                <attribute name="Implementation-Version" value="${version}"/>
+                <attribute name="Built-Date" value="${TODAY}"/>
+            </manifest>
+        </war>
+    </target>
+
+    <!-- Generate iBatis Artifacts using iBator -->
+    <target name="ibator-genfiles" description="Generate the iBatis artifact files">
+        <taskdef name="ibator"
+                 classname="org.apache.ibatis.ibator.ant.IbatorAntTask"
+                 classpathref="base.path"/>
+        <ibator overwrite="true" configfile="${basedir}/db/ibatorConfig.xml" verbose="false">
+            <propertyset>
+                <propertyref name="generated.source.dir"/>
+            </propertyset>
+        </ibator>
+    </target>
+
+    <!-- Run Test using TestNG -->
+    <target name="test" depends="compile" description="Run test cases">
+        <mkdir dir="${dist.dir}"/>
+        <taskdef resource="testngtasks" classpathref="base.path"/>
+        <testng classpathref="testng.cp"
+                outputDir="${dist.dir}/testng/output"
+                haltOnFailure="true" verbose="2">
+            <classfileset dir="${test.classes.dir}" includes="**/*.class"/>
+            <jvmarg value="-ea"/>
+        </testng>
+    </target>
+
+</project>

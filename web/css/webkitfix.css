@@ -1,0 +1,16 @@
+/*
+    Document   : webkitfix.css
+    Created on : Jun 22, 2010, 5:30:16 PM
+    Author     : imam
+    Description:
+        To fix xytable stylesheet in WebKit browser (Safari)
+*/
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    table.ui-xytable td { height: 1.88em; }
+    table.ui-xytable tr.ui-xytable-header th.count,
+    table.ui-xytable tr.ui-xytable-header th.check,
+    table.ui-xytable tr.ui-xytable-header th.radio {
+        width: 40px;
+    }
+}

@@ -1,0 +1,36 @@
+/*
+ * XYTable style, you may want to modify if necessary to follow your color themes
+ */
+div.ui-xytable-wrapper { }
+table.ui-xytable { }
+table.ui-xytable a.ico { }
+table.ui-xytable th { background-color:#fbf3d5; color:#818181; text-align: left; padding:7px 10px; border-bottom:solid 1px #d2d1cb; font-weight: bold; font-size: 110%; }
+table.ui-xytable th.header { background:#fbf3d5 url(../../../img/bg.gif) no-repeat center right; cursor:pointer; }
+table.ui-xytable th.header.headerSortUp { background:#fbf3d5 url(../../../img/desc.gif) no-repeat center right; }
+table.ui-xytable th.header.headerSortDown { background:#fbf3d5 url(../../../img/asc.gif) no-repeat center right; }
+table.ui-xytable tr.ui-xytable-header th.count { width: 25px; }
+table.ui-xytable tr.ui-xytable-header th.check,
+table.ui-xytable tr.ui-xytable-header th.radio { width: 13px; }
+table.ui-xytable td { background:#fbfcfc;  border-bottom:solid 1px #e0e0e0; padding:8px 10px; cursor:pointer; margin:0; }
+table.ui-xytable tr.ui-xytable-alternate td { background:#f8f8f8; }
+table.ui-xytable tr.ui-xytable-highlight td { background:#fff9e1; }
+table.ui-xytable tr.ui-xytable-empty-row td { font-weight: bold; text-align: left; }
+table.ui-xytable tr:hover td { background:#fff9e1; }
+
+/* Pagination */
+.ui-xytable-pager { height:20px; padding:8px 10px; line-height:19px; color:#949494; }
+.ui-xytable-pager .info { float:left; display: inline; }
+.ui-xytable-pager .index { float: right; display: inline; }
+.ui-xytable-pager a { background:url(../../../img/pagging.gif) repeat-x 0 0; height:20px; float:left; padding:0 8px; border:solid 1px #d5d5d5; text-decoration: none; color:#949494; margin-left:5px; }
+.ui-xytable-pager a:hover { border-color:#8c3521; background:#ba4c32; color:#fff; }
+.ui-xytable-pager a.current, a.inactive { font-weight: bold; }
+.ui-xytable-pager a.current:hover, a.inactive:hover { border-color:#8c3521; background:url(../../../img/pagging.gif) repeat-x 0 0; color:#949494; cursor:default; }
+.ui-xytable-pager span { float:left; margin-left:5px; padding-top:2px; }
+.ui-xytable-pager input.goto { width: 30px; }
+
+/* Drag & Drop */
+table.ui-xytable span.ui-xytable-draghandle { display: inline-block; border: 1px solid #999; text-align: center; }
+
+/* Aligns */
+table.ui-xytable .center { text-align: center; }
+table.ui-xytable .right { text-align: right; }
